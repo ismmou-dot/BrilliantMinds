@@ -1,0 +1,618 @@
+.class-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+  }
+  
+  .class-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+  }
+  
+  .class-card:focus {
+    outline: 2px solid #3b82f6;
+    outline-offset: 2px;
+  }
+  
+  .card-header {
+    font-size: 1.2rem;
+    
+  }
+  
+  .card-body {
+    background-color: #f8f9fa;
+  }
+  
+  .card-body p {
+    margin: 0;
+    color: #6c757d;
+  }
+  .card-header {
+    font-size: 1.5rem; /* Larger header text */
+    padding: 1rem 1.5rem; /* Adjust padding */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #007bff; /* Blue background */
+    color: #ffffff; /* White text */
+  }
+  
+  .card-title {
+    font-size: 2rem; /* Bigger text for the title */
+    font-weight: bold;
+    margin: 0;
+  }
+  
+  .image-placeholder {
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+  }
+  
+  .class-image {
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
+    border-radius: 50%;
+  }
+  
+  .card-body {
+    padding: 1.5rem;
+  }
+  .add-icon {
+    background-color: yellow; /* Debug highlight */
+    display: inline-block; /* Ensure it's visible */
+  }
+
+.dashboard-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.join-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.join-btn:hover {
+    background: #2563eb;
+}
+
+.classes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 24px;
+}
+
+.class-card {
+    height: auto;
+    border-radius: 12px;
+    background: white;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+    cursor: pointer;
+    outline: none;
+    position: relative;
+}
+
+.card-image {
+    height: 160px;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+.close-btn {
+  padding: 8px;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #64748b;
+  transition: all 0.2s ease;
+}
+
+.close-btn:hover {
+  background: #f1f5f9;
+  color: #ef4444;
+}
+.hover-info {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 10px;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7), transparent);
+    display: flex;
+    justify-content: space-between;
+    color: white;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.hover-info span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+
+.class-card:hover .hover-info {
+    opacity: 1;
+}
+
+.card-content {
+    padding: 16px;
+    background: white;
+}
+
+.class-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1f2937;
+}
+
+.teacher-info, .created-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4b5563;  /* Darker color for better visibility */
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.teacher-info i, .created-date i {
+    color: #3b82f6;  /* Blue color for icons */
+    font-size: 18px;
+}
+
+.teacher-info span, .created-date span {
+    color: #4b5563;  /* Ensure text is visible */
+    font-weight: 500;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 16px;
+    position: relative;
+    z-index: 2;
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    padding: 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.7) 0%, transparent 100%);
+}
+
+.quick-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    padding: 8px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 8px;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.icon-btn:hover {
+    background: rgba(255,255,255,0.3);
+}
+
+.card-content {
+    padding: 16px;
+    background: white;
+}
+
+.class-title {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 12px;
+    color: #1f2937;
+}
+
+.teacher-info, .created-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4b5563;  /* Darker color for better visibility */
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.teacher-info i, .created-date i {
+    color: #3b82f6;  /* Blue color for icons */
+    font-size: 18px;
+}
+
+.teacher-info span, .created-date span {
+    color: #4b5563;  /* Ensure text is visible */
+    font-weight: 500;
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.card-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.8) 100%);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    color: white;
+}
+
+.class-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.class-tag {
+    font-size: 12px;
+    padding: 4px 12px;
+    background: rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+}
+
+.student-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 12px;
+}
+
+.class-title {
+    font-size: 24px;
+    font-weight: 600;
+    margin: 16px 0;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+.class-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.teacher-info, .created-date {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: rgba(255,255,255,0.9);
+}
+
+.card-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.view-btn, .quit-btn {
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.view-btn {
+    background: #3b82f6;
+    color: white;
+    border: none;
+    text-decoration: none;
+}
+
+.quit-btn {
+    padding: 8px;
+    background: rgba(239, 68, 68, 0.1);
+    color: #ef4444;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.quit-btn:hover {
+    background: rgba(239, 68, 68, 0.2);
+}
+
+.view-btn:hover {
+    background: #2563eb;
+}
+
+.quit-btn:hover {
+    background: rgba(239, 68, 68, 0.3);
+}
+
+/* Modal Styles */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    backdrop-filter: blur(4px);
+}
+
+.modal-container {
+    background: white;
+    border-radius: 16px;
+    padding: 24px;
+    width: 90%;
+    max-width: 500px;
+    width: 400px;
+    animation: modalSlide 0.3s ease;
+}
+
+.modal-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-header i {
+    color: #3b82f6;
+    font-size: 24px;
+}
+
+.join-form {
+    padding: 20px;
+}
+
+.input-group {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.input-group i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 12px 12px 12px 40px;
+    border: 2px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 16px;
+    transition: all 0.2s ease;
+}
+
+.input-group input:focus {
+    border-color: #3b82f6;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.join-form button {
+    width: 100%;
+    padding: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    background: #3b82f6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.join-form button:hover {
+    background: #2563eb;
+}
+
+.join-form button:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+@keyframes modalSlide {
+    from { 
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Material Icons Adjustments */
+.material-icons {
+    vertical-align: middle;
+    line-height: 1;
+}
+
+/* Alert Styling */
+.alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 16px;
+    padding: 12px;
+    border-radius: 8px;
+}
+
+.alert i {
+    font-size: 20px;
+}
+
+.alert {
+    padding: 12px;
+    border-radius: 6px;
+    margin-top: 12px;
+}
+
+.success {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.error {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.statistics-section {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.stats-card {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.stats-card .material-icons {
+    font-size: 2.5rem;
+    color: #5161ce;
+    padding: 12px;
+    background: #eff6ff;
+    border-radius: 12px;
+}
+
+.stats-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.stats-value {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.stats-label {
+    font-size: 0.875rem;
+    color: #666;
+}
+@media (max-width: 600px) {
+    .stats-label {
+      display: none;
+    }
+  }
+.class-statistics {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 8px;
+}
+
+.stat-item {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.stat-item i {
+    color: #3b82f6;
+    font-size: 18px;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.filter-sort {
+    display: flex;
+    gap: 12px;
+}
+
+.search-input, .sort-select {
+    padding: 8px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    transition: all 0.2s ease;
+}
+
+.search-input:focus, .sort-select:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}

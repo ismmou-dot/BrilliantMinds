@@ -1,0 +1,453 @@
+.quiz-submit-container {
+    max-width: 800px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+  }
+  
+  .quiz-header {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .quiz-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+    margin: 0 0 1rem 0;
+  }
+  
+  .quiz-meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+  
+  .class-tag {
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+    background: #f8fafc;
+    border-radius: 8px;
+    color: #1f2937;
+    font-weight: 600;
+    border: 2px solid #e2e8f0;
+  }
+  
+  .time-remaining {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #64748b;
+    font-weight: 500;
+  }
+  
+  .time-remaining.warning {
+    color: #ef4444;
+    animation: pulse 1s infinite;
+  }
+  
+  .progress-bar {
+    margin-top: 1rem;
+    height: 6px;
+    background: #e2e8f0;
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  
+  .progress {
+    height: 100%;
+    background: #3b82f6;
+    transition: width 0.3s ease;
+  }
+  
+  .question-container {
+    background: white;
+    border-radius: 12px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+  
+  .question-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .question-number {
+    font-weight: 500;
+    color: #64748b;
+  }
+  
+  .points {
+    font-weight: 500;
+    color: #3b82f6;
+  }
+  
+  .question-text {
+    font-size: 1.125rem;
+    color: #1f2937;
+    margin-bottom: 2rem;
+  }
+  
+  .answer-section {
+    margin-top: 1.5rem;
+  }
+  
+  .multiple-choice .option,
+  .true-false .option {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .multiple-choice .option:hover,
+  .true-false .option:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+  }
+  
+  .multiple-choice .option.selected,
+  .true-false .option.selected {
+    border-color: #3b82f6;
+    background: #e0f2fe;
+  }
+  
+  .multiple-choice input[type="radio"],
+  .true-false input[type="radio"] {
+    margin-right: 1rem;
+  }
+  
+  .short-answer textarea {
+    width: 100%;
+    padding: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 8px;
+    resize: vertical;
+    font-size: 1rem;
+    transition: all 0.2s ease;
+  }
+  
+  .short-answer textarea:focus {
+    outline: none;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  }
+  
+  .navigation-buttons {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+  
+  .btn-primary,
+  .btn-secondary,
+  .btn-submit {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .btn-primary {
+    background: #3b82f6;
+    color: white;
+    border: none;
+  }
+  
+  .btn-primary:hover {
+    background: #2563eb;
+    transform: translateY(-1px);
+  }
+  
+  .btn-secondary {
+    background: white;
+    color: #64748b;
+    border: 2px solid #e2e8f0;
+  }
+  
+  .btn-secondary:hover {
+    background: #f8fafc;
+    transform: translateY(-1px);
+  }
+  
+  .btn-submit {
+    background: #10b981;
+    color: white;
+    border: none;
+  }
+  
+  .btn-submit:hover {
+    background: #059669;
+    transform: translateY(-1px);
+  }
+  
+  button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+  }
+  
+  @keyframes pulse {
+    0% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+    100% {
+      opacity: 1;
+    }
+  }
+
+  .error-message {
+    color: #dc3545;
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+  }
+  
+  .ng-touched.ng-invalid input,
+  .ng-touched.ng-invalid textarea {
+    border-color: #dc3545;
+  }
+  
+  .option input:focus + label {
+    color: #0056b3;
+  }
+
+  input[type="radio"] {
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border: 2px solid #e2e8f0;
+    border-radius: 50%;
+    outline: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  input[type="radio"]:checked {
+    background-color: #3b82f6;
+    border-color: #3b82f6;
+  }
+  
+  input[type="radio"]:focus {
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
+  }
+
+  .submitted-answers {
+    background: white;
+    border-radius: 16px;
+    padding: 2rem;
+    margin-top: 2rem;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  }
+  
+  .submitted-answer {
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #e2e8f0;
+  }
+  
+  .question-summary {
+    margin-bottom: 1rem;
+  }
+  
+  .question-summary p {
+    margin: 0.5rem 0;
+  }
+  
+  .correct {
+    color: #10b981;
+    font-weight: bold;
+  }
+  
+  .incorrect {
+    color: #ef4444;
+    font-weight: bold;
+  }
+  
+  .score {
+    margin-top: 2rem;
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: #3b82f6;
+  }
+
+  .result-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid #f3f4f6;
+  }
+  
+  .result-header h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #1f2937;
+  }
+  
+  .final-score {
+    display: flex;
+    align-items: center;
+  }
+  
+  .score-circle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #3b82f6, #2563eb);
+    color: white;
+    box-shadow: 0 4px 6px -1px rgba(59, 130, 246, 0.5);
+  }
+  
+  .score-value {
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+  
+  .score-label {
+    font-size: 0.75rem;
+    opacity: 0.9;
+  }
+  
+  .answers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .answer-card {
+    background: #f8fafc;
+    border-radius: 12px;
+    padding: 1.5rem;
+    transition: transform 0.2s ease;
+  }
+  
+  .answer-card:hover {
+    transform: translateY(-2px);
+  }
+  
+  .answer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .question-number {
+    font-weight: 600;
+    color: #64748b;
+  }
+  
+  .status-icon {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+  
+  .status-icon.correct {
+    color: #10b981;
+  }
+  
+  .status-icon.incorrect {
+    color: #ef4444;
+  }
+  
+  .question-text {
+    font-size: 1.1rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+    line-height: 1.5;
+  }
+  
+  .answers-comparison {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .user-answer, .correct-answer {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  
+  .answer-label {
+    min-width: 120px;
+    font-weight: 500;
+    color: #64748b;
+  }
+  
+  .answer-value {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-weight: 500;
+  }
+  
+  .answer-value.correct {
+    background: rgba(16, 185, 129, 0.1);
+    color: #059669;
+  }
+  
+  .answer-value.incorrect {
+    background: rgba(239, 68, 68, 0.1);
+    color: #dc2626;
+  }
+  
+  @keyframes slideIn {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  .answer-card {
+    animation: slideIn 0.3s ease-out forwards;
+    animation-delay: calc(var(--index) * 0.1s);
+  }
+
+  .score-tag {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.2rem;
+    padding: 0.5rem 1.2rem;
+    background: linear-gradient(135deg, #10b981, #059669);
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    box-shadow: 0 2px 4px rgba(16, 185, 129, 0.2);
+  }
+  
+  .score-tag svg {
+    width: 20px;
+    height: 20px;
+    stroke: currentColor;
+  }

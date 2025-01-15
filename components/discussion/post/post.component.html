@@ -1,0 +1,166 @@
+<div class="post-container">
+  <!-- Post Header -->
+  <div class="header-wrapper">
+    <div class="user-info">
+      <div class="avatar">
+        <img 
+        *ngIf="post.user?.avatar; else generatedAvatar" 
+        [src]="post.user.avatar" 
+        [alt]="post.user.name" 
+        class="user-avatar"
+      >
+      <ng-template #generatedAvatar>
+        <div class="generated-avatar">
+          {{ getInitial(post.user.name) }}
+        </div>
+      </ng-template>
+      </div>
+      <div class="user-details">
+        <h5>{{ post.user.name }}</h5>
+        <div class="post-meta">
+          <span class="timestamp">{{ post.created_at | date:'MMM d, y, h:mm a' }}</span>
+          <span class="class-tag" *ngIf="post.class && post.class !== 'all'">
+            {{ post.class }}
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    <button 
+      *ngIf="isOwner || isTeacher"
+      class="action-btn"
+      (click)="deletePost()"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M3 6h18"></path>
+        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Post Content -->
+  <div class="content-wrapper">
+    <p>{{ post.content }}</p>
+  </div>
+
+  <!-- File Attachments -->
+  <div class="preview-grid" *ngIf="post.files?.length">
+    <div class="preview-item" *ngFor="let file of post.files">
+      <ng-container [ngSwitch]="getFileType(file.name)">
+        <!-- Image Files -->
+        <div *ngSwitchCase="'image'" class="preview-content">
+          <img [src]="file.file_path" [alt]="file.name" class="preview-image" (click)="openViewer(file.file_path,getFileType(file.name))">
+          <div class="file-info">
+            <span class="file-name">{{ file.name }}</span>
+            <span class="file-size">{{ file.size | fileSize }}</span>
+          </div>
+        </div>
+
+        <!-- PDF Files -->
+        <div *ngSwitchCase="'pdf'" class="preview-content document">
+          <div class="document-icon">
+            <i class="fas fa-file-pdf fa-2x"></i>
+          </div>
+          <div class="file-info">
+            <span class="file-name" (click)="openViewer(file.file_path, getFileType(file.name))">{{ file.name }}</span>
+            <span class="file-size">{{ file.size | fileSize }}</span>
+          </div>
+        </div>
+
+        <!-- Other Files -->
+        <div *ngSwitchDefault class="preview-content document">
+          <div class="document-icon">
+            <i [ngClass]="{
+              'fa-file-word': getFileType(file.name) === 'doc',
+              'fa-file-excel': getFileType(file.name) === 'excel',
+              'fa-file-archive': getFileType(file.name) === 'zip',
+              'fa-file-alt': getFileType(file.name) === 'txt',
+              'fa-file': getFileType(file.name) === 'other'
+            }" class="fas fa-2x"></i> <!-- Increase icon size with fa-2x -->
+          </div>
+          <div class="file-info">
+            <a [href]="file.file_path" [download]="file.name">
+              <span class="file-name">{{ file.name }}</span>
+            </a>
+            <span class="file-size">{{ file.size | fileSize }}</span>
+          </div>
+        </div>
+      </ng-container>
+    </div>
+  </div>
+
+  <!-- Modal Viewer -->
+  <div class="modal" [ngClass]="{'show': isViewerOpen}" (click)="closeViewer()">
+    <div class="modal-content" (click)="$event.stopPropagation()">
+   
+      <iframe *ngIf="viewerFileType === 'image'" [src]="viewerFilePath" class="file-viewer"></iframe>
+    </div>
+  </div>
+
+  <!-- Links -->
+  <div class="links-wrapper" *ngIf="post.links?.length">
+    <a 
+      *ngFor="let link of post.links"
+      
+      [href]="link.url"
+      target="_blank"
+      rel="noopener noreferrer"
+      class="link-item"
+    >
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
+        <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
+      </svg>
+      {{ link.url }}
+    </a>
+  </div>
+
+  <!-- Comment Section -->
+  <div class="comment-wrapper">
+    <div class="comment" *ngFor="let comment of post.comments">
+      <div class="comment-header">
+        <div class="comment-avatar">
+          <img 
+            *ngIf="comment.user?.avatar; else generatedCommentAvatar" 
+            [src]="comment.user.avatar" 
+            [alt]="comment.user.name" 
+            class="comment-user-avatar"
+          >
+          <ng-template #generatedCommentAvatar>
+            <div class="generated-avatar">
+              {{ getInitial(comment.user.name) }}
+            </div>
+          </ng-template>
+        </div>
+        <div class="comment-content-wrapper">
+          <div class="comment-details">
+            <span class="comment-author">{{ comment.user.name }}</span>
+            <span class="comment-timestamp">{{ comment.created_at | date: 'short' }}</span>
+          </div>
+          <p class="comment-content">{{ comment.content }}</p>
+        </div>
+      </div>
+    </div>
+  
+    <div class="comment-input">
+      <input
+        type="text"
+        [(ngModel)]="newComment"
+        placeholder="Add a comment..."
+        (keyup.enter)="addComment(post.id)"
+      >
+      <button 
+        class="send-btn"
+        (click)="addComment(post.id)"
+        [disabled]="!newComment.trim()"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="22" y1="2" x2="11" y2="13"></line>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
+

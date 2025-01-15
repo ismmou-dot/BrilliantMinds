@@ -1,0 +1,166 @@
+<div class="quiz-submit-container">
+    <div class="quiz-header">
+      <div class="quiz-info">
+        <h1 class="quiz-title">{{ quiz?.title }}</h1>
+        <div class="quiz-meta">
+          <span class="class-tag"> {{ quiz?.class }}</span>
+          <div *ngIf="isSubmitted" class="score-tag">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 15l-2-2h4l-2 2z"/>
+              <path d="M8.5 11.5l3.5-3.5 3.5 3.5"/>
+              <circle cx="12" cy="12" r="10"/>
+            </svg>
+            Score: {{ score }} points
+          </div>
+          <div *ngIf="!isSubmitted" class="time-remaining" [ngClass]="{'warning': timeRemaining.startsWith('5')}">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="12" r="10"></circle>
+              <polyline points="12 6 12 12 16 14"></polyline>
+            </svg>
+            Time Remaining: {{ timeRemaining }}
+          </div>
+        </div>
+      </div>
+      <div class="progress-bar">
+        <div class="progress" [style.width.%]="getProgressPercentage()"></div>
+      </div>
+    </div>
+  
+    <form *ngIf="!isSubmitted"  [formGroup]="quizForm" (ngSubmit)="submitQuiz()" class="quiz-form">
+      <div *ngIf="getCurrentQuestion()" class="question-container">
+        <div class="question-header">
+          <span class="question-number">Question {{ currentQuestionIndex + 1 }} of {{ quiz?.questions?.length }}</span>
+          <span class="points">{{ getCurrentQuestion().points }} points</span>
+        </div>
+  
+        <div class="question-content">
+          <p class="question-text">{{ getCurrentQuestion().text }}</p>
+  
+          <div class="answer-section" [formGroup]="getFormGroup(currentQuestionIndex)">
+            <ng-container [ngSwitch]="getCurrentQuestion().type">
+              
+              <!-- Multiple Choice -->
+              <div *ngSwitchCase="'multiple_choice'" class="multiple-choice">
+                <div *ngFor="let option of getCurrentQuestion().options" 
+                     class="option" 
+                     [class.selected]="isSelected(option)"
+                     (click)="selectOption(option)">
+                  <input type="radio" 
+                         [id]="'option-' + option" 
+                         [value]="option" 
+                         formControlName="answer"
+                         (click)="$event.stopPropagation()">
+                  <label [for]="'option-' + option">{{ option }}</label>
+                </div>
+              </div>
+  
+              <!-- True/False -->
+              <div *ngSwitchCase="'true_false'" class="true-false">
+                <div class="option" 
+                     [class.selected]="isSelected('true')" 
+                     (click)="selectOption('true')">
+                  <input type="radio" id="true" value="true" formControlName="answer"
+                         (click)="$event.stopPropagation()">
+                  <label for="true">True</label>
+                </div>
+                <div class="option" 
+                     [class.selected]="isSelected('false')" 
+                     (click)="selectOption('false')">
+                  <input type="radio" id="false" value="false" formControlName="answer"
+                         (click)="$event.stopPropagation()">
+                  <label for="false">False</label>
+                </div>
+              </div>
+  
+              <!-- Short Answer -->
+              <div *ngSwitchCase="'short_answer'" class="short-answer">
+                <textarea formControlName="answer" 
+                          placeholder="Enter your answer here..."
+                          rows="4"></textarea>
+              </div>
+            </ng-container>
+  
+            <div *ngIf="isAnswerInvalid(currentQuestionIndex)" class="error-message">
+              Please provide an answer
+            </div>
+          </div>
+        </div>
+      </div>
+  
+      <div class="navigation-buttons">
+        <button type="button" 
+                class="btn-secondary" 
+                (click)="previousQuestion()" 
+                [disabled]="currentQuestionIndex === 0">
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+          </svg>
+          Previous
+        </button>
+        
+        <button type="button" 
+                *ngIf="!isLastQuestion()" 
+                class="btn-primary" 
+                (click)="nextQuestion()">
+          Next
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+          </svg>
+        </button>
+  
+        <button type="submit" 
+                *ngIf="isLastQuestion()" 
+                class="btn-submit">
+          Submit Quiz
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </button>
+      </div>
+    </form>
+
+    <div *ngIf="isSubmitted" class="submitted-answers">
+      <div class="result-header">
+        <h2>Quiz Results</h2>
+      </div>
+
+      <div class="answers-list">
+        <div *ngFor="let answer of submittedAnswers; let i = index" class="answer-card">
+          <div class="answer-header">
+            <span class="question-number">Question {{ i + 1 }}</span>
+            <span class="answer-status" [class.correct]="answer.answer === quiz?.questions?.[i]?.correct_answer" 
+                  [class.incorrect]="answer.answer !== quiz?.questions?.[i]?.correct_answer">
+              <svg *ngIf="answer.answer === quiz?.questions?.[i]?.correct_answer" class="status-icon correct" viewBox="0 0 24 24">
+                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41L9 16.17z"/>
+              </svg>
+              <svg *ngIf="answer.answer !== quiz?.questions?.[i]?.correct_answer" class="status-icon incorrect" viewBox="0 0 24 24">
+                <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41z"/>
+              </svg>
+            </span>
+          </div>
+
+          <div class="question-text">{{ quiz?.questions?.[i]?.text }}</div>
+
+          <div class="answers-comparison">
+            <div class="user-answer">
+              <span class="answer-label">Your Answer:</span>
+              <span class="answer-value" [class.correct]="answer.answer === quiz?.questions?.[i]?.correct_answer"
+                    [class.incorrect]="answer.answer !== quiz?.questions?.[i]?.correct_answer">
+                {{ answer.answer }}
+              </span>
+            </div>
+            <div class="correct-answer" *ngIf="answer.answer !== quiz?.questions?.[i]?.correct_answer">
+              <span class="answer-label">Correct Answer:</span>
+              <span class="answer-value correct">{{ quiz?.questions?.[i]?.correct_answer }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

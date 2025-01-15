@@ -1,0 +1,251 @@
+<div class="quiz-container">
+  <div class="quiz-card">
+
+    
+    <form [formGroup]="quizForm" (ngSubmit)="onSubmit()" class="quiz-form">
+      <!-- Quiz Title -->
+      <div class="form-group">
+        <label for="title" class="input-label">
+          <i class="material-icons">title</i> Title
+        </label>
+        <div class="input-container">
+          <input 
+            id="title" 
+            type="text" 
+            formControlName="title" 
+            class="form-control"
+            placeholder="Enter the quiz title"
+          >
+          <i class="material-icons input-icon">edit</i>
+        </div>
+        <div class="input-hint">The title should be clear and descriptive</div>
+      </div>
+
+      <!-- Quiz Description -->
+      <div class="form-group">
+        <label for="description" class="input-label">
+          <i class="material-icons">description</i> Description
+        </label>
+        <div class="input-container">
+          <textarea 
+            id="description" 
+            formControlName="description" 
+            class="form-control"
+            placeholder="Enter the quiz description"
+            rows="3"
+          ></textarea>
+        </div>
+        <div class="input-hint">Provide a brief description of the quiz</div>
+      </div>
+
+      <!-- Quiz Duration, Start Time, and End Time -->
+      <div class="form-group time-group">
+        <div class="time-item">
+          <label for="duration" class="input-label">
+            <i class="material-icons">timer</i> Duration (minutes)
+          </label>
+          <div class="input-container">
+            <input 
+              id="duration" 
+              type="number" 
+              formControlName="duration" 
+              class="form-control"
+              placeholder="Enter the quiz duration"
+              min="1"
+            >
+          </div>
+        </div>
+
+        <div class="time-item">
+          <label for="start_time" class="input-label">
+            <i class="material-icons">event</i> Start Time
+          </label>
+          <div class="input-container">
+            <input 
+              id="start_time" 
+              type="datetime-local" 
+              formControlName="start_time" 
+              class="form-control"
+            >
+          </div>
+        </div>
+
+        <div class="time-item">
+          <label for="end_time" class="input-label">
+            <i class="material-icons">event</i> End Time
+          </label>
+          <div class="input-container">
+            <input 
+              id="end_time" 
+              type="datetime-local" 
+              formControlName="end_time" 
+              class="form-control"
+            >
+          </div>
+        </div>
+      </div>
+
+      <!-- Questions Section -->
+      <div class="questions-section" formArrayName="questions">
+        <div class="section-header">
+          <h3><i class="material-icons">fact_check</i> Questions</h3>
+          <button type="button" class="btn-add pulse-animation" (click)="addQuestion()">
+            <i class="material-icons">add</i>
+            Add a Question
+          </button>
+        </div>
+
+        <div *ngFor="let question of questions.controls; let i = index" 
+             class="question-card" 
+             [formGroupName]="i">
+          <div class="question-header">
+            <div class="question-number">
+              <span class="number">{{ i + 1 }}</span>
+              <h4>Question</h4>
+            </div>
+            <button type="button" class="btn-delete" (click)="removeQuestion(i)">
+              <i class="material-icons">delete</i>
+              Delete
+            </button>
+          </div>
+
+          <!-- Question Text -->
+          <div class="form-group">
+            <label [for]="'text-' + i" class="input-label">
+              <i class="material-icons">help</i> Question Text
+            </label>
+            <div class="input-container">
+              <input 
+                [id]="'text-' + i" 
+                type="text" 
+                formControlName="text" 
+                class="form-control"
+                placeholder="Enter your question"
+              >
+            </div>
+          </div>
+
+          <!-- Question Type -->
+          <div class="form-group">
+            <label [for]="'type-' + i" class="input-label">
+              <i class="material-icons">category</i> Question Type
+            </label>
+            <div class="select-container">
+              <select 
+                [id]="'type-' + i" 
+                formControlName="type" 
+                class="form-control"
+                (change)="onTypeChange($event, i)"
+              >
+                <option value="multiple_choice">Multiple Choice</option>
+                <option value="true_false">True or False</option>
+                <option value="short_answer">Short Answer</option>
+              </select>
+              <i class="material-icons select-icon">arrow_drop_down</i>
+            </div>
+          </div>
+
+          <!-- Multiple Choice Options -->
+          <div *ngIf="question.get('type')?.value === 'multiple_choice'" 
+               class="options-section">
+            <div formArrayName="options">
+              <label class="input-label">
+                <i class="material-icons">list</i> Options
+              </label>
+              
+              <div *ngFor="let option of getOptions(i).controls; let j = index" 
+                   class="option-item">
+                <div class="input-container">
+                  <input 
+                    type="text" 
+                    [formControlName]="j" 
+                    class="form-control"
+                    placeholder="Option {{ j + 1 }}"
+                  >
+                  <button type="button" 
+                          class="btn-delete-small" 
+                          (click)="removeOption(i, j)">
+                    <i class="material-icons">remove_circle</i>
+                  </button>
+                </div>
+              </div>
+              
+              <button type="button" 
+                      class="btn-add-small" 
+                      (click)="addOption(i)">
+                <i class="material-icons">add_circle</i>
+                Add an option
+              </button>
+            </div>
+          </div>
+
+          <!-- True/False Options -->
+          <div *ngIf="question.get('type')?.value === 'true_false'" 
+               class="true-false-section">
+            <label class="input-label">
+              <i class="material-icons">check_box</i> Correct Answer
+            </label>
+            <div class="true-false-options">
+              <select 
+                formControlName="correct_answer" 
+                class="form-control"
+              >
+                <option value="true">True</option>
+                <option value="false">False</option>
+              </select>
+              <i class="material-icons select-icon">arrow_drop_down</i>
+            </div>
+          </div>
+
+          <!-- Short Answer/Multiple Choice Correct Answer -->
+          <div *ngIf="question.get('type')?.value !== 'true_false'" class="form-group">
+            <label [for]="'correct-' + i" class="input-label">
+              <i class="material-icons">check_circle</i> Correct Answer
+            </label>
+            <div class="input-container">
+              <input 
+                [id]="'correct-' + i" 
+                type="text" 
+                formControlName="correct_answer" 
+                class="form-control"
+                placeholder="Enter the correct answer"
+              >
+            </div>
+          </div>
+
+          <!-- Points -->
+          <div class="form-group points-group">
+            <label [for]="'points-' + i" class="input-label">
+              <i class="material-icons">stars</i> Points
+            </label>
+            <div class="input-container points-container">
+              <input 
+                [id]="'points-' + i" 
+                type="number" 
+                formControlName="points" 
+                class="form-control"
+                min="1"
+              >
+              <div class="points-controls">
+                <button type="button" (click)="adjustPoints(i, 1)" class="points-btn">
+                  <i class="material-icons">add</i>
+                </button>
+                <button type="button" (click)="adjustPoints(i, -1)" class="points-btn">
+                  <i class="material-icons">remove</i>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" 
+              class="btn-submit" 
+              [disabled]="quizForm.invalid">
+        <i class="material-icons">save</i>
+        Create the Quiz
+      </button>
+    </form>
+  </div>
+</div>

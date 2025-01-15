@@ -1,0 +1,129 @@
+<section class="vh-100" id="registration-page">
+  <div class="container-fluid h-custom">
+    <div class="row d-flex justify-content-center align-items-center h-100">
+      <div class="col-md-8 col-lg-6 col-xl-4">
+        <form (ngSubmit)="onSubmit()">
+          <h3 class="text-center mb-4">Register</h3>
+
+          <!-- Name -->
+          <div class="form-outline mb-4">
+            <input
+              type="text"
+              id="registerName"
+              class="form-control form-control-lg"
+              placeholder="Enter your name"
+              [(ngModel)]="name"
+              name="name"
+              required
+            />
+            <label class="form-label" for="registerName">Name</label>
+          </div>
+
+          <!-- Email -->
+          <div class="form-outline mb-4">
+            <input
+              type="email"
+              id="registerEmail"
+              class="form-control form-control-lg"
+              placeholder="Enter a valid email address"
+              [(ngModel)]="email"
+              name="email"
+              required
+            />
+            <label class="form-label" for="registerEmail">Email address</label>
+          </div>
+
+          <!-- Role -->
+          <div class="form-outline mb-4">
+            <select
+              id="registerRole"
+              class="form-select"
+              [(ngModel)]="role"
+              name="role"
+              required
+            >
+              <option value="" disabled selected>Select Role</option>
+              <option value="teacher">Teacher</option>
+              <option value="student">Student</option>
+            </select>
+          </div>
+
+          <!-- Phone -->
+          <div class="form-outline mb-4">
+            <input
+              type="text"
+              id="registerPhone"
+              class="form-control form-control-lg"
+              placeholder="Enter your phone number"
+              [(ngModel)]="phone"
+              name="phone"
+            />
+            <label class="form-label" for="registerPhone">Phone</label>
+          </div>
+
+          <!-- Date of Birth -->
+          <div class="form-outline mb-4">
+            <input
+              type="date"
+              id="registerDateOfBirth"
+              class="form-control form-control-lg"
+              [(ngModel)]="date_of_birth"
+              name="date_of_birth"
+              required
+            />
+            <label class="form-label" for="registerDateOfBirth">Date of Birth</label>
+          </div>
+
+          <!-- Gender -->
+          <div class="form-outline mb-4">
+            <select
+              id="registerGender"
+              class="form-select"
+              [(ngModel)]="gender"
+              name="gender"
+              required
+            >
+              <option value="" disabled selected>Select Gender</option>
+              <option value="male">Male</option>
+              <option value="female">Female</option>
+            </select>
+          </div>
+
+          <!-- Password -->
+          <div class="form-outline mb-4">
+            <input
+              type="password"
+              id="registerPassword"
+              class="form-control form-control-lg"
+              placeholder="Enter password"
+              [(ngModel)]="password"
+              name="password"
+              required
+              minlength="8"
+            />
+            <label class="form-label" for="registerPassword">Password</label>
+          </div>
+
+          <!-- Confirm Password -->
+          <div class="form-outline mb-4">
+            <input
+              type="password"
+              id="registerConfirmPassword"
+              class="form-control form-control-lg"
+              placeholder="Confirm password"
+              [(ngModel)]="passwordConfirmation"
+              name="passwordConfirmation"
+              required
+            />
+            <label class="form-label" for="registerConfirmPassword">Confirm Password</label>
+          </div>
+
+          <!-- Submit Button -->
+          <div class="text-center">
+            <button type="submit" class="btn btn-primary btn-lg">Register</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>

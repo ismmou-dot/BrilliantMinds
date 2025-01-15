@@ -1,0 +1,113 @@
+<div class="dashboard-container">
+    <div class="header-section">
+        <h2 class="page-title"><i class="material-icons">school</i> My Classes</h2>
+        <!-- Fixed the click event binding -->
+        <button class="join-btn" (click)="showJoinForm = true">
+            <i class="material-icons">add_circle</i>
+            Join New Class
+        </button>
+    </div>
+
+    <!-- Add Statistics Section -->
+    <div class="statistics-section">
+        <div class="stats-card">
+            <i class="material-icons">school</i>
+            <div class="stats-info">
+                <span class="stats-value">{{ statistics.total_number_of_classes }}</span>
+                <span class="stats-label">Total Classes</span>
+            </div>
+        </div>
+        <div class="stats-card">
+            <i class="material-icons">assignment</i>
+            <div class="stats-info">
+                <span class="stats-value">{{ statistics.total_number_of_assignments }}</span>
+                <span class="stats-label">Total Assignments</span>
+            </div>
+        </div>
+        <div class="stats-card">
+            <i class="material-icons">quiz</i>
+            <div class="stats-info">
+                <span class="stats-value">{{ statistics.total_number_of_quizzes }}</span>
+                <span class="stats-label">Total Quizzes</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Join Class Modal with improved close handling -->
+    <div class="modal-overlay" *ngIf="showJoinForm" (click)="closeJoinForm()">
+        <div class="modal-container" (click)="$event.stopPropagation()">
+            <div class="modal-header">
+                <i class="material-icons">class</i>
+                <h3>Join a Class</h3>
+                <button class="close-btn" (click)="closeJoinForm()">
+                    <i class="material-icons">close</i>
+                </button>
+            </div>
+            <div class="modal-content">
+                <form #joinForm="ngForm" (submit)="joinClass(joinForm)" class="join-form">
+                    <div class="input-group">
+                        <i class="material-icons">vpn_key</i>
+                        <input type="text" 
+                               [(ngModel)]="class_code" 
+                               name="class_code" 
+                               placeholder="Enter class code"
+                               required>
+                    </div>
+                    <button type="submit" [disabled]="joinForm.invalid">
+                        <i class="material-icons">login</i>
+                        Join Class
+                    </button>
+                </form>
+                <div *ngIf="joinSuccess" class="alert success">
+                    <i class="material-icons">check_circle</i>
+                    {{ joinSuccess }}
+                </div>
+                <div *ngIf="joinError" class="alert error">
+                    <i class="material-icons">error</i>
+                    {{ joinError }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Classes Grid -->
+    <div class="section-header">
+        <h3></h3>
+        <div class="filter-sort">
+            <input type="text" [(ngModel)]="searchTerm" placeholder="Search classes..." class="search-input">
+            <select [(ngModel)]="sortOrder" class="sort-select">
+                <option value="name">Sort by Name</option>
+                <option value="recent">Sort by Recent</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="classes-grid">
+        <div *ngFor="let classItem of filteredAndSortedClasses" class="class-card" [routerLink]="['/class', classItem.id]">
+            <div class="card-image" [style.background-image]="'url(' + (classItem.image || 'assets/default-class-bg.jpg') + ')'">
+                <div class="hover-info">
+                    <span><i class="material-icons">assignment</i> {{ classItem.statistics?.number_of_assignments || 0 }} Assignments</span>
+                    <span><i class="material-icons">group</i> {{ classItem.statistics?.number_of_students || 0 }}</span>
+                </div>
+            </div>
+            <div class="card-content">
+                <h3 class="class-title">{{ classItem.name }}</h3>
+                <div class="teacher-info">
+                    <i class="material-icons">person</i>
+                    <span>{{ classItem.teacher.name }}</span>
+                </div>
+                <div class="created-date">
+                    <i class="material-icons">calendar_today</i>
+                    <span>{{ classItem.created_at | date:'MMM d, y' }}</span>
+                </div>
+
+                <div class="card-actions" (click)="$event.stopPropagation()">
+                    <button (click)="quitClass(classItem.id)" class="quit-btn">
+                        <i class="material-icons">exit_to_app</i>
+                        Leave
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

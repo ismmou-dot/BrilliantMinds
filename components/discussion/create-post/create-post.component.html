@@ -1,0 +1,92 @@
+<div class="post-container">
+    <div class="select-wrapper">
+      <select [formControl]="classSelect" class="class-select">
+        <option value="all">All students</option>
+        <option value="math">Math class</option>
+        <option value="science">Science class</option>
+      </select>
+    </div>
+
+    <!-- Post Content -->
+    <form [formGroup]="postForm" (ngSubmit)="onSubmit()">
+      <div class="content-wrapper">
+        <textarea
+          formControlName="content"
+          placeholder="Share something with your class..."
+          class="content-input"
+          rows="4"
+        ></textarea>
+      </div>
+
+      <!-- Link Input -->
+      <div class="link-input-wrapper" *ngIf="showLinkInput">
+        <input
+          type="url"
+          placeholder="Paste your link here"
+          class="link-input"
+          [formControl]="linkInput"
+          (keydown.enter)="addLink($event)"
+        >
+        <button type="button" class="add-link-btn" (click)="addLink($event)">Add</button>
+        <button type="button" class="close-link-btn" (click)="showLinkInput = false">×</button>
+      </div>
+
+      <!-- File Previews -->
+      <div class="preview-grid" *ngIf="previews.length > 0">
+        <div class="preview-item" *ngFor="let preview of previews; let i = index" [class.is-file]="preview.type !== 'image'">
+          <!-- Image Preview -->
+          <img *ngIf="preview.type === 'image'" [src]="preview.url" alt="Preview" class="preview-image">
+          
+          <!-- File Preview -->
+          <div *ngIf="preview.type !== 'image'" class="file-preview">
+            <div class="file-icon" [innerHTML]="preview.icon"></div>
+            <div class="file-name">{{ preview.file.name }}</div>
+            <div class="file-size">{{ formatFileSize(preview.file.size) }}</div>
+          </div>
+
+          <button type="button" class="remove-btn" (click)="removeFile(i)">
+            <span class="close-icon">×</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div class="actions-bar">
+        <div class="left-actions">
+          <label class="upload-btn" [class.has-files]="previews.length > 0">
+            <input
+              type="file"
+              multiple
+              (change)="onFileSelected($event)"
+              accept="*/*"
+              hidden
+            >
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="17 8 12 3 7 8"/>
+              <line x1="12" y1="3" x2="12" y2="15"/>
+            </svg>
+            <span *ngIf="previews.length > 0" class="file-count">{{ previews.length }}</span>
+          </label>
+          <button type="button" class="link-btn" (click)="toggleLinkInput()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+              <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+            </svg>
+          </button>
+        </div>
+        <div class="right-actions">
+          <button type="button" class="cancel-btn" (click)="cancel()">Cancel</button>
+          <button type="submit" class="post-btn" [disabled]="postForm.invalid">
+            <span class="btn-content">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"/>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+              </svg>
+              Post
+            </span>
+          </button>
+        </div>
+      </div>
+    </form>
+</div>

@@ -1,0 +1,121 @@
+<div class="page-container" *ngIf="classDetails">
+  <div class="class-header-container" [ngStyle]="{'background-image': 'url('+ getBackgroundImage()+')' }">
+    <div class="header-top">
+      <div>
+        <h1 class="class-title">{{classDetails.name}}</h1>
+        <div class="class-subject">{{classDetails.description}}</div>
+      </div>
+      <button *ngIf="isTeacher" class="customize-button" (click)="openCustomizePopup()">
+        <svg class="customize-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
+        </svg>
+        Customize
+      </button>
+    </div>
+  
+    <div *ngIf="isTeacher" class="class-code-section">
+      <span class="code-label">Class code</span>
+      <span class="code-value">{{classDetails.code}}</span>
+      <svg class="copy-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" (click)="copyClassCode()">
+        <path d="M8 5H6a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2v-1M8 5a2 2 0 002 2h2a2 2 0 002-2M8 5a2 2 0 012-2h2a2 2 0 012 2m0 0h2a2 2 0 012 2v3m2 4H10m0 0l3-3m-3 3l3 3" />
+      </svg>
+    </div>
+  
+    <div class="header-decoration"></div>
+  </div>
+    
+  <app-navbar [activeTab]="activeTab" (tabSelected)="setActiveTab($event)"></app-navbar> <!-- Passer l'événement de sélection d'onglet -->
+  
+  <div class="discussion-container">
+    <ng-container [ngSwitch]="activeTab">
+      <app-discussion-detail *ngSwitchCase="'discussion'" [discussion]="classDetails.discussion"></app-discussion-detail>
+      <app-quiz-list *ngSwitchCase="'quizzes'" [classId]="classDetails.id" ></app-quiz-list>
+      <app-assignments *ngSwitchCase="'assignments'" [classId]="classDetails.id"></app-assignments> 
+      <ng-container *ngIf="isTeacher">
+        <app-students *ngSwitchCase="'students'" [classId]="classDetails.id"></app-students>
+      </ng-container>
+    </ng-container>
+  </div>
+</div>
+
+<!-- Custom modal -->
+<div class="custom-modal" *ngIf="isPopupOpen" [@modalAnimation]>
+  <div class="custom-modal-content">
+    <div class="custom-modal-header">
+      <div class="header-title">
+        <i class="fas fa-edit"></i>
+        <h4 class="custom-modal-title">Customize Class</h4>
+      </div>
+      <button type="button" class="close" (click)="closeCustomizePopup()">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+    <div class="custom-modal-body">
+      <div class="form-group">
+        <label for="className">
+          <i class="fas fa-chalkboard"></i>
+          Class Name
+        </label>
+        <div class="input-group">
+          <input type="text" 
+                 id="className" 
+                 class="form-control" 
+                 [(ngModel)]="classDetails.name"
+                 placeholder="Enter class name">
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="classDescription">
+          <i class="fas fa-align-left"></i>
+          Class Description
+        </label>
+        <div class="input-group">
+          <textarea id="classDescription" 
+                    class="form-control" 
+                    [(ngModel)]="classDetails.description"
+                    placeholder="Enter class description"
+                    rows="3"></textarea>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="classFile">
+          <i class="fas fa-image"></i>
+          Background Image
+        </label>
+        <div class="file-upload-container">
+          <div class="file-upload-preview" *ngIf="previewImage">
+            <img [src]="previewImage" alt="Preview">
+            <button class="remove-image" (click)="removeImage()">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+          <div class="file-upload-box" [class.has-file]="!!selectedFile" (click)="triggerFileInput()">
+            <input type="file" 
+                   #fileInput
+                   id="classFile" 
+                   class="file-input" 
+                   (change)="onFileSelected($event)"
+                   accept="image/*">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>{{ selectedFile?.name || 'Click to upload image' }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="custom-modal-footer">
+      <button type="button" 
+              class="btn btn-secondary" 
+              (click)="closeCustomizePopup()">
+        <i class="fas fa-times"></i>
+        Cancel
+      </button>
+      <button type="button" 
+              class="btn btn-primary" 
+              (click)="saveClassDetails()"
+              [disabled]="isSaving">
+        <i class="fas fa-save"></i>
+        {{ isSaving ? 'Saving...' : 'Save Changes' }}
+      </button>
+    </div>
+  </div>
+</div>

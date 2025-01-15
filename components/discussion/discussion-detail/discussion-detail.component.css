@@ -1,0 +1,62 @@
+.discussion-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px;
+  }
+
+  .create-post-action {
+    margin-bottom: 32px;
+  }
+
+  .create-post-btn {
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 500;
+    color: #1573f7;
+    box-shadow: 0 2px 4px #020b18;
+  }
+
+  .btn-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .section-title {
+    font-size: 24px;
+    font-weight: 500;
+    color: #1573f7;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e5e7eb;
+  }
+
+  .posts-grid {
+    display: grid;
+    gap: 24px;
+  }
+
+  .post-wrapper {
+    background: transparent;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+
+
+
+  @media (max-width: 640px) {
+    .discussion-container {
+      padding: 16px;
+    }
+
+    .create-post-btn {
+      width: 100%;
+    }
+  }
+
+  @media (min-width: 768px) {
+    .posts-grid {
+      grid-template-columns: repeat(auto-fill, minmax(400px, 1fr));
+    }
+  }

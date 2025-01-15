@@ -1,0 +1,181 @@
+<div class="min-vh-100 bg-light py-4">
+    <div class="container">
+        <div class="card shadow-lg border-0">
+            <!-- Profile Header -->
+            <div class="card-header text-white p-4" style="background-color: #5161ce;">
+                <div class="text-center">
+                    <div class="position-relative mx-auto" style="width: 128px;">
+                        <!-- Profile Image -->
+                        <div class="rounded-circle overflow-hidden border border-3 border-white" style="width: 128px; height: 128px;">
+                            <img
+                                [src]="previewImage || userData.avatar"
+                                *ngIf="userData?.avatar || previewImage; else generatedAvatar"
+                                alt="Profile"
+                                class="w-100 h-100 object-fit-cover"
+                            />
+                            <ng-template #generatedAvatar>
+                                <div class="d-flex justify-content-center align-items-center h-100 bg-light">
+                                    <span class="fs-2 text-secondary">{{ getInitial(userData.name) }}</span>
+                                </div>
+                            </ng-template>
+                        </div>
+                        
+                        <!-- Camera Upload Button -->
+                        <label *ngIf="isEditing" class="position-absolute bottom-0 end-0 bg-white rounded-circle p-2 shadow-sm cursor-pointer m-1 camera-upload-btn">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" class="text-primary camera-icon">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="camera-lens" d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <input
+                                type="file"
+                                class="d-none"
+                                accept="image/*"
+                                (change)="onImageSelected($event)"
+                            />
+                        </label>
+                    </div>
+                    <h2 class="mt-3 h3 fw-bold">{{ userData.name }}</h2>
+                    <span class="text-light h4 opacity-75 text-capitalize">{{ userData.role }}</span>
+                </div>
+            </div>
+
+            <div class="card-body p-4">
+                <!-- Edit Button -->
+                <div class="d-flex justify-content-end mb-4">
+                    <button
+                        (click)="toggleEdit()"
+                        class="btn btn-outline-primary d-flex align-items-center gap-2"
+                    >
+                        <ng-container *ngIf="isEditing">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                            Cancel
+                        </ng-container>
+                        <ng-container *ngIf="!isEditing">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                            </svg>
+                            Edit Profile
+                        </ng-container>
+                    </button>
+                </div>
+
+                <!-- Profile Form -->
+                <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
+                    <div class="row g-4">
+                        <!-- Personal Information -->
+                        <div class="col-md-6">
+                            <h3 class="h6 fw-bold pb-2 border-bottom mb-3">Personal Information</h3>
+                            
+                            <div class="mb-3">
+                                <label class="form-label fw-bold text-blue w-medium">Name </label>
+                                <ng-container *ngIf="isEditing; else nameDisplay">
+                                    <input
+                                        type="text"
+                                        formControlName="name"
+                                        class="form-control"
+                                    />
+                                </ng-container>
+                                <ng-template #nameDisplay>
+                                    <p class="form-control-plaintext">{{ userData.name }}</p>
+                                </ng-template>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium fw-bold"><strong>Email</strong></label>
+                                <p class="form-control-plaintext">{{ userData.email }}</p>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium fw-bold">Phone</label>
+                                <ng-container *ngIf="isEditing; else phoneDisplay">
+                                    <input
+                                        type="tel"
+                                        formControlName="phone"
+                                        class="form-control"
+                                    />
+                                </ng-container>
+                                <ng-template #phoneDisplay>
+                                    <p class="form-control-plaintext">{{ userData.phone }}</p>
+                                </ng-template>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium fw-bold">Address</label>
+                                <ng-container *ngIf="isEditing; else addressDisplay">
+                                    <textarea
+                                        formControlName="address"
+                                        rows="3"
+                                        class="form-control"
+                                    ></textarea>
+                                </ng-container>
+                                <ng-template #addressDisplay>
+                                    <p class="form-control-plaintext">{{ userData.address }}</p>
+                                </ng-template>
+                            </div>
+                        </div>
+
+                        <!-- Additional Information -->
+                        <div class="col-md-6">
+                            <h3 class="h6 fw-bold pb-2 border-bottom mb-3">Additional Information</h3>
+                            
+                            <div class="mb-3"> 
+                                <label class="form-label fw-medium fw-bold">Date of Birth</label>
+                                <ng-container *ngIf="isEditing; else dobDisplay">
+                                    <input
+                                        type="date"
+                                        formControlName="date_of_birth"
+                                        class="form-control"
+                                    />
+                                </ng-container>
+                                <ng-template #dobDisplay>
+                                    <p class="form-control-plaintext">{{ userData.date_of_birth | date }}</p>
+                                </ng-template>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label fw-medium fw-bold">Gender</label>
+                                <ng-container *ngIf="isEditing; else genderDisplay">
+                                    <select
+                                        formControlName="gender"
+                                        class="form-select"
+                                    >
+                                        <option value="male">Male</option>
+                                        <option value="female">Female</option>
+                                    </select>
+                                </ng-container>
+                                <ng-template #genderDisplay>
+                                    <p class="form-control-plaintext text-capitalize">{{ userData.gender }}</p>
+                                </ng-template>
+                            </div>
+
+                            <!-- Last Login Information -->
+                            <div class="bg-light rounded p-3 mt-4">
+                                <h4 class="h6 fw-bold mb-3">Last Login Information</h4>
+                                <div class="text-secondary">
+                                    <p class="mb-2">Time: {{ userData.last_login_at | date:'medium' }}</p>
+                                    <p class="mb-2">IP Address: {{ userData.last_login_ip }}</p>
+                                    <p class="mb-0">Browser: {{ userData.last_login_browser }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Save Button -->
+                    <div *ngIf="isEditing" class="mt-4 d-flex justify-content-end">
+                        <button
+                            type="submit"
+                            class="btn btn-primary d-flex align-items-center gap-2"
+                        >
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
+                            </svg>
+                            Save Changes
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

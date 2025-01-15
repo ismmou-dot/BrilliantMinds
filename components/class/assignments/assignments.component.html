@@ -1,0 +1,68 @@
+<div class="assignments-container">
+  <div class="header-section">
+    <h2 class="page-title">Assignments</h2>
+    <button *ngIf="isTeacher" class="create-btn" (click)="openCreateModal()">
+      <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" 
+           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <line x1="5" y1="12" x2="19" y2="12"></line>
+      </svg>
+      Create Assignment
+    </button>
+  </div>
+  <div class="assignments-grid">
+    <div 
+      *ngFor="let assignment of assignments" 
+      class="assignment-card"
+      (click)="navigateToDetail(assignment.id)"
+      [ngClass]="{'overdue': isOverdue(assignment.created_at)}"
+    >
+      <div class="card-header">
+        <div class="class-tag">{{ assignment.class }}</div>
+        <div class="status-badge" [ngClass]="assignment.status">
+          {{ assignment.status }}
+        </div>
+        <button *ngIf="isTeacher" class="edit-btn" (click)="editAssignment(assignment)">
+          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+               stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 20h9"></path>
+            <path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"></path>
+          </svg>
+        </button>
+      </div>
+      <h3 class="assignment-title">{{ assignment.title }}</h3>
+      <div class="due-date">
+        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" 
+             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
+          <line x1="16" y1="2" x2="16" y2="6"></line>
+          <line x1="8" y1="2" x2="8" y2="6"></line>
+          <line x1="3" y1="10" x2="21" y2="10"></line>
+        </svg>
+        <span>Due {{ assignment.dueDateTime | date:'MMM d, y, h:mm a' }}</span>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="isTeacher" class="teacher-actions">
+    <div class="modal-overlay" *ngIf="showCreateModal " (click)="closeCreateModal()">
+      <div class="modal-container" (click)="$event.stopPropagation()">
+        <div class="modal-header">
+          <h3>Create New Assignment</h3>
+          <button class="close-btn" (click)="closeCreateModal()">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" 
+                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+        <div class="modal-content">
+          <app-create-assignment 
+            [classId]="classId" 
+            (assignmentCreated)="onAssignmentCreated($event)"
+          ></app-create-assignment>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

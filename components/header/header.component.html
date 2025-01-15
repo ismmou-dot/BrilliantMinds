@@ -1,0 +1,53 @@
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+<nav class="navbar  navbar-expand-custom navbar-mainbg">
+    <div class="navbar-brand-wrapper">
+      <a class="navbar-brand navbar-logo" routerLink="/home">
+        <div class="brand-content">
+          <img src="assets/logo.svg" alt="Brilliant Minds Logo" class="brand-logo">
+          <span class="brand-name">Brilliant Minds</span>
+        </div>
+      </a>
+    </div>
+    <button class="navbar-toggler" type="button" (click)="toggleNavbar()" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <i class="fas fa-bars text-white"></i>
+    </button>
+    <div class="collapse navbar-collapse" [ngClass]="{'show': isNavbarCollapsed}" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+        <div class="hori-selector z-1">
+          <div class="left"></div>
+          <div class="right"></div>
+        </div>
+
+        
+          <li class="nav-item active">
+            <a class="nav-link" routerLink="/home"><i class="fas fa-home"></i> Home</a>
+          </li>
+          <li *ngIf="isAuth" class="nav-item ">
+            <a class="nav-link" [routerLink]="getDashboardLink()">
+              <i class="fas fa-tachometer-alt"></i>Dashboard
+            </a>
+          </li>
+          <li *ngIf="isAuth" class="nav-item">
+            <a class="nav-link" routerLink="/assignments"><i class="fas fa-tasks"></i> Assignments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" routerLink="/schedule"><i class="far fa-calendar-alt"></i> Schedule</a>
+          </li>
+       
+
+          <li  *ngIf="!isAuth" class="nav-item">
+            <a class="nav-link" routerLink="/login"><i class="fas fa-sign-in-alt"></i>Login</a>
+          </li>
+   
+            <li  *ngIf="isAuth" class="nav-item">
+                <a class="nav-link" [routerLink]="getProfileLink()"><i class="fas fa-user"></i>Profile</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" (click)="logout()" title="Logout"><i class="fas fa-sign-out-alt"></i></a>
+              </li>
+
+   
+          
+      </ul>
+    </div>
+  </nav>

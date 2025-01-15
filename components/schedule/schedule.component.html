@@ -1,0 +1,115 @@
+<div class="schedule">
+  <div class="schedule-header">
+    <div class="calendar-navigation">
+      <h2>
+        <i class="fas fa-calendar-alt"></i>
+        {{ getCurrentViewLabel() }}
+      </h2>
+      <div class="nav-controls">
+        <button class="nav-btn" (click)="navigateCalendar('prev')">
+          <i class="fas fa-chevron-left"></i>
+        </button>
+        <button class="nav-btn" (click)="resetToToday()">
+          Today
+        </button>
+        <button class="nav-btn" (click)="navigateCalendar('next')">
+          <i class="fas fa-chevron-right"></i>
+        </button>
+      </div>
+    </div>
+    <div class="view-controls">
+      <button [class.active]="viewMode === 'week'" (click)="setViewMode('week')">
+        <i class="fas fa-calendar-week"></i> Week
+      </button>
+      <button [class.active]="viewMode === 'month'" (click)="setViewMode('month')">
+        <i class="fas fa-calendar-alt"></i> Month
+      </button>
+      <button [class.active]="viewMode === 'year'" (click)="setViewMode('year')">
+        <i class="fas fa-calendar"></i> Year
+      </button>
+    </div>
+  </div>
+
+  <div class="calendar" [ngClass]="viewMode">
+    <ng-container [ngSwitch]="viewMode">
+      <ng-container *ngSwitchCase="'week'">
+        <div class="day" *ngFor="let day of weekDays"
+             [class.today]="day.type === 'day' && day.formattedDate === (currentDate | date:'yyyy-MM-dd')">
+          <div class="date" *ngIf="day.type === 'day'">
+            <span class="day-name">{{ day.dayName }}</span>
+            <span class="day-number">{{ day.date | date:'d' }}</span>
+          </div>
+          <ng-container *ngIf="day.type === 'day' && hasEventsOnDay(day.formattedDate)">
+            <div class="events">
+              <div class="event assignment" *ngFor="let assignment of getAssignmentsForDay(day.formattedDate)"
+                   (mouseenter)="showEventDetail($event, assignment, 'assignment')"
+                   (mouseleave)="hideEventDetail()">
+                <i class="fas fa-book"></i> {{ assignment.title }}
+              </div>
+              <div class="event quiz" *ngFor="let quiz of getQuizzesForDay(day.formattedDate)"
+                   (mouseenter)="showEventDetail($event, quiz, 'quiz')"
+                   (mouseleave)="hideEventDetail()">
+                <i class="fas fa-question-circle"></i> {{ quiz.title }}
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'month'">
+        <div class="weekday-header" *ngFor="let dayName of ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat']">
+          {{ dayName }}
+        </div>
+        <div class="day" *ngFor="let day of weekDays" 
+             [class.current-month]="day.type === 'day' && day.isCurrentMonth"
+             [class.today]="day.type === 'day' && day.formattedDate === (currentDate | date:'yyyy-MM-dd')"
+             [style.opacity]="day.type === 'day' && day.isCurrentMonth ? 1 : 0.5"
+             (mouseenter)="day.type === 'day' && showEventDetail($event, day, 'day')"
+             (mouseleave)="hideEventDetail()">
+          <ng-container *ngIf="day.type === 'day'">
+            <div class="date">
+              <span class="day-number">{{ day.date | date:'d' }}</span>
+            </div>
+            <div class="events-preview" *ngIf="hasEventsOnDay(day.formattedDate)">
+              <div class="event-dot" 
+                   *ngFor="let event of getAssignmentsForDay(day.formattedDate).concat(getQuizzesForDay(day.formattedDate))"
+                   [class.assignment]="event.dueDateTime"
+                   [class.quiz]="event.date">
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+
+      <ng-container *ngSwitchCase="'year'">
+        <div class="month" *ngFor="let item of weekDays">
+          <ng-container *ngIf="item.type === 'month'">
+            <div class="month-content" 
+                 (mouseenter)="showMonthEventDetail($event, item.number)"
+                 (mouseleave)="hideEventDetail()">
+              <h3>{{ item.name }}</h3>
+              <div class="event-count" *ngIf="item.events > 0">
+                {{ item.events }} events
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </ng-container>
+    </ng-container>
+  </div>
+
+  <div class="event-detail-popup" 
+       *ngIf="selectedEvent"
+       [style.left.px]="hoverPosition.x + 10"
+       [style.top.px]="hoverPosition.y + 10">
+    <div class="event-detail-header" [ngClass]="selectedEvent.type">
+      <i class="fas" [ngClass]="{'fa-book': selectedEvent.type === 'assignment', 'fa-question-circle': selectedEvent.type === 'quiz'}"></i>
+      {{ selectedEvent.title }}
+    </div>
+    <div class="event-detail-content">
+      <p><strong>Date:</strong> {{ selectedEvent.date }}</p>
+      <p *ngIf="selectedEvent.time"><strong>Time:</strong> {{ selectedEvent.time }}</p>
+      <p class="description">{{ selectedEvent.description }}</p>
+    </div>
+  </div>
+</div>

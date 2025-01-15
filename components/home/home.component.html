@@ -1,0 +1,60 @@
+<div class="home-container">
+  <div class="hero-section">
+    <h1>Welcome to Brilliant Minds</h1>
+    <p>Your journey to knowledge starts here.</p>
+    <button class="cta-btn" routerLink="/login" *ngIf="!isAuth">Get Started</button>
+    <button class="cta-btn" [routerLink]="getDashboardLink()" *ngIf="isAuth">Get Started</button>
+  </div>
+  
+  <div class="features-section">
+    <div class="feature-card">
+      <i class="fas fa-tasks"></i>
+      <h3>Manage Assignments</h3>
+      <p>Keep track of your assignments and never miss a deadline.</p>
+    </div>
+    <div class="feature-card">
+      <i class="far fa-calendar-alt"></i>
+      <h3>Schedule</h3>
+      <p>Organize your schedule and stay on top of your tasks.</p>
+    </div>
+    <div class="feature-card">
+      <i class="fas fa-user"></i>
+      <h3>Profile</h3>
+      <p>Manage your profile and keep your information up to date.</p>
+    </div>
+  </div>
+
+  <!-- Testimonials Section -->
+  <div class="testimonials-section">
+    <h2>What Our Users Say</h2>
+    <div class="testimonial-card">
+      <p>"Brilliant Minds has transformed the way I manage my assignments and schedule. Highly recommend!"</p>
+      <span>- Ahmed Moussaoui</span>
+    </div>
+    <div class="testimonial-card">
+      <p>"The platform is user-friendly and has all the features I need to stay organized."</p>
+      <span>- Sarah Nablaoui</span>
+    </div>
+    <div class="testimonial-card">
+      <p>"I love the profile management feature. It keeps all my information up to date and easily accessible."</p>
+      <span>- Michael Brown</span>
+    </div>
+  </div>
+
+  <!-- Call-to-Action Section -->
+  <div class="cta-section">
+    <h2>Ready to Get Started?</h2>
+    <p>Join Brilliant Minds today and take control of your learning journey.</p>
+    <button class="cta-btn" routerLink="/signup">Sign Up Now</button>
+  </div>
+
+  <!-- Footer Section -->
+  <div class="footer-section">
+    <p>&copy; 2023 Brilliant Minds. All rights reserved.</p>
+    <div class="social-icons">
+      <a href="#"><i class="fab fa-facebook-f"></i></a>
+      <a href="#"><i class="fab fa-twitter"></i></a>
+      <a href="#"><i class="fab fa-linkedin-in"></i></a>
+    </div>
+  </div>
+</div>
